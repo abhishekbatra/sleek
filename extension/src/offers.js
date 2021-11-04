@@ -1,3 +1,5 @@
+import axios from "axios";
+
 export async function loadOffers(url) {
   return [
 		{
@@ -30,6 +32,10 @@ export class OffersLoader {
 		return new URL(url).hostname;
 	}
 
+	constructor() {
+		this.serviceRootUrl = "http://127.0.0.1:8000"; // This should be configured based on environment
+	}
+
 	getOffers(url, cb) {
 		chrome.storage.sync.get(['offers'], cb);
 		cb([
@@ -57,8 +63,13 @@ export class OffersLoader {
 		]);
 	}
 
-	loadOffers(url) {
-		
+	async loadOffers(url) {
+		try {
+			const offers = await axios.get(this.serviceRootUrl + '/deals/' + url);
+		} catch(e) {
+			// should display error message in UI
+			console.error("error loading offers");
+		}
 	}
 
 	storeOffers(url) {

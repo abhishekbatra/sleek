@@ -17,5 +17,7 @@
     "webpack-cli": "^3.3.12",
     "webpack-merge": "^5.8.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "axios": "^0.24.0"
+  }
 }
