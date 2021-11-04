@@ -83,6 +83,10 @@ import './popup.css';
 
   function restoreCounter() {
     // Restore count value
+    chrome.storage.sync.get(['offers'], result => {
+      setupCounter(result);
+    });
+
     counterStorage.get(count => {
       if (typeof count === 'undefined') {
         // Set counter value as 0

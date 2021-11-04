@@ -1,5 +1,5 @@
 'use strict';
-import { loadOffers } from './sleek';
+import { OffersLoader } from './offers';
 
 // With background scripts you can communicate with popup
 // and contentScript files.
@@ -21,7 +21,17 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   }
 });
 
+chrome.webNavigation.onBeforeNavigate.addListener(function(e) {
+  const offersLoader = new OffersLoader();
+  offersLoader.loadOffers(OffersLoader.getDomain(e.url));
+});
 
-chrome.webNavigation.onBeforeNavigate.addListener(async function(e) {
-  await loadOffers(e.url);
+chrome.tabs.onActivated.addListener(function(activeInfo) {
+  chrome.tabs.get(
+    activeInfo.tabId,
+    tab => {
+      const offersLoader = new OffersLoader();
+      offersLoader.loadOffers(OffersLoader.getDomain(tab.url));
+    }
+  )
 });
