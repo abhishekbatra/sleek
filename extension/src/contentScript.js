@@ -42,8 +42,9 @@ export class ContentRenderer {
   }
 
   renderOfferEl(offer) {
+    debugger;
     let button = document.createElement("button");
-    button.innerHTML = "Offer1234";
+    button.innerHTML = `Click here to get ${offer.deal_amount}% off!`;
     button.style.position = "fixed";
     button.style.top = 0;
     button.style.right = 0;
