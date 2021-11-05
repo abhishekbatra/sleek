@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Extension",
   "version": "0.1.0",
   "description": "My Chrome Extension",
@@ -10,19 +10,22 @@
     "128": "icons/icon_128.png"
   },
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": false
+    "service_worker": "background.js"
   },
-  "browser_action": {
+  "action": {
     "default_title": "Extension",
     "default_popup": "popup.html"
   },
   "permissions": [
     "storage",
     "webNavigation",
-    "tabs"
+    "tabs",
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://*/*",
+    "http://*/*"
   ],
   "content_scripts": [
     {

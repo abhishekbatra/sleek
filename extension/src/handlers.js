@@ -5,12 +5,19 @@ export class DomainActivatedHandler {
 		this.onUrlActivated(e.url);
 	}
 
-	onUrlActivated(url) {
+	async onUrlActivated(url) {
 		const offersLoader = new OffersLoader();
 		const merchantURL = OffersLoader.getDomain(url);
 		if (merchantURL) {
-			const offers = offersLoader.loadOffers(merchantURL);
-			offersLoader.storeOffers(merchantURL, offers);
+			const offers = await offersLoader.loadOffers(merchantURL);
+			await offersLoader.storeOffers(merchantURL, offers);
+			chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+				const currentTab = tabs[0];
+
+				if (currentTab) {
+					chrome.tabs.sendMessage(currentTab.id, {action: "url-activated"}, function(response) {});
+				}
+			});
 		}
 	}
 }

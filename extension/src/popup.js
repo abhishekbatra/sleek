@@ -1,5 +1,6 @@
 'use strict';
 
+import { OffersLoader } from './offers';
 import './popup.css';
 
 (function() {
@@ -99,7 +100,34 @@ import './popup.css';
     });
   }
 
-  document.addEventListener('DOMContentLoaded', restoreCounter);
+  function onDomLoaded() {
+    const offerLoader = new OffersLoader();
+    chrome.tabs.query({ active: true, currentWindow: true }, tabs => {
+      const currentTab = tabs[0];
+      if (currentTab.url !== "") {
+        const merchantURL = OffersLoader.getDomain(currentTab.url);
+        offerLoader.getOffers(merchantURL, offersCB);
+      }
+    });
+  }
+
+  function offersCB(offersResult) {
+    setupCounter(typeof offersResult);
+    console.log(offersResult);
+    if (offersResult) {
+      offersResult.forEach(offer => {
+        addOfferEl(offer);
+      });
+    }
+  }
+
+  function addOfferEl(offer) {
+    setupCounter(offer.deal_amount);
+    let offersList = document.getElementsByClassName("offers-list").item(0);
+    offersList.innerHTML += `<li>offer</li>`
+  }
+
+  document.addEventListener('DOMContentLoaded', onDomLoaded);
 
   // Communicate with background file by sending a message
   chrome.runtime.sendMessage(
