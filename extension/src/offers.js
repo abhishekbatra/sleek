@@ -34,6 +34,9 @@ export class OffersLoader {
 
 	constructor() {
 		this.serviceRootUrl = "http://127.0.0.1:8000"; // This should be configured based on environment
+		this.axiosInstance = axios.create({
+			baseURL: this.serviceRootUrl
+		})
 	}
 
 	getOffers(url, cb) {
@@ -63,18 +66,19 @@ export class OffersLoader {
 		]);
 	}
 
-	async loadOffers(url) {
+	async loadOffers(merchantURL) {
 		try {
-			const offers = await axios.get(this.serviceRootUrl + '/deals/' + url);
+			const offers = await this.axiosInstance.get(`/deals/${merchantURL}`);
+			return offers;
 		} catch(e) {
 			// should display error message in UI
 			console.error("error loading offers");
 		}
 	}
 
-	storeOffers(url) {
+	storeOffers(merchantURL, offers) {
 		chrome.storage.sync.get(['offers'], result => {
-			result['offers'] = offers;
+			result['offers'][merchantURL] = offers;
 			chrome.storage.sync.set({
 				offers: result
 			});

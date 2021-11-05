@@ -18,5 +18,5 @@ To run in dev mode:
 - `$ npm install`
 - `$ npm run watch`
 - Open Google Chrome's extension manager and click on Developer Mode
-- Click Load Unpacked and select extension/build folder
-- If this doesn't work, open your file browser and drag the extension/build folder into the extension manager tab in Google Chrome
+- Click Load Unpacked and select `extension/build` folder
+- If this doesn't work, open your file browser and drag the `extension/build` folder into the extension manager tab in Google Chrome

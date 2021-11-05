@@ -1,4 +1,5 @@
 'use strict';
+import { DomainActivatedHandler, TabActivatedHandler } from './handlers';
 import { OffersLoader } from './offers';
 
 // With background scripts you can communicate with popup
@@ -22,16 +23,11 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
 });
 
 chrome.webNavigation.onBeforeNavigate.addListener(function(e) {
-  const offersLoader = new OffersLoader();
-  offersLoader.loadOffers(OffersLoader.getDomain(e.url));
+  const domainActivatedHandler = new DomainActivatedHandler();
+  domainActivatedHandler.handleEvent(e);
 });
 
 chrome.tabs.onActivated.addListener(function(activeInfo) {
-  chrome.tabs.get(
-    activeInfo.tabId,
-    tab => {
-      const offersLoader = new OffersLoader();
-      offersLoader.loadOffers(OffersLoader.getDomain(tab.url));
-    }
-  )
+  const tabActivatedHandler = new TabActivatedHandler();
+  tabActivatedHandler.handleEvent(activeInfo);
 });
