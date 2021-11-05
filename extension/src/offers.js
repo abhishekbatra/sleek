@@ -13,7 +13,6 @@ export class OffersLoader {
 
 	getOffers(merchantURL, cb) {
 		chrome.storage.sync.get(['offers'], result => {
-			debugger;
 			let storedOffers = result['offers'];
 			if (storedOffers) {
 				cb(result['offers'][merchantURL]);
@@ -27,8 +26,8 @@ export class OffersLoader {
 		try {
 			// const offers = await this.axiosInstance.get(`/deals/${merchantURL}`);
 			const offers = await fetch(`${this.serviceRootUrl}/deals/${merchantURL}`);
-			debugger;
-			return offers.data;
+			const data = await offers.json();
+			return data;
 		} catch(e) {
 			// should display error message in UI
 			console.error("error loading offers");

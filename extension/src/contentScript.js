@@ -30,7 +30,7 @@ export class ContentRenderer {
 		const offerLoader = new OffersLoader();
     
     const merchantURL = OffersLoader.getDomain(window.location.href);
-    offerLoader.getOffers(merchantURL, this.offersCB);
+    offerLoader.getOffers(merchantURL, offersResult => this.offersCB(offersResult));
 	}
 
   offersCB(offersResult) {
@@ -43,7 +43,10 @@ export class ContentRenderer {
 
   renderOfferEl(offer) {
     let button = document.createElement("button");
-    button.setAttribute("position", "fixed");
-    button.innerHTML = "Offer";
+    button.innerHTML = "Offer1234";
+    button.style.position = "fixed";
+    button.style.top = 0;
+    button.style.right = 0;
+    document.body.appendChild(button);
   }
 }
